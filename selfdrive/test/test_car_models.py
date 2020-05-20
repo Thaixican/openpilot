@@ -194,6 +194,7 @@ routes = {
     'carFingerprint': TOYOTA.CAMRY,
     'enableCamera': True,
     'enableDsu': False,
+    'fingerprintSource': 'fixed',
   },
   "f7b6be73e3dfd36c|2019-05-11--22-34-20": {
     'carFingerprint': TOYOTA.AVALON,
@@ -247,6 +248,7 @@ routes = {
     'enableCamera': True,
     'enableDsu': True,
     'enableGasInterceptor': False,
+    'fingerprintSource': 'fixed',
   },
   "cdf2f7de565d40ae|2019-04-25--03-53-41": {
     'carFingerprint': TOYOTA.RAV4_TSS2,
@@ -296,6 +298,7 @@ routes = {
     "01b22eb2ed121565|2020-02-02--11-25-51": {
     'carFingerprint': TOYOTA.LEXUS_RX_TSS2,
     'enableCamera': True,
+    'fingerprintSource': 'fixed',
   },
   "ec429c0f37564e3c|2020-02-01--17-28-12": {
     'carFingerprint': TOYOTA.LEXUS_NXH,
@@ -415,9 +418,7 @@ if __name__ == "__main__":
 
   results = {}
   for route, checks in routes.items():
-    print("GETTING ROUTE LOGS")
     get_route_log(route)
-    print("DONE GETTING ROUTE LOGS")
 
     params = Params()
     params.clear_all()
@@ -426,6 +427,7 @@ if __name__ == "__main__":
     params.put("CommunityFeaturesToggle", "1")
     params.put("Passive", "1" if route in passive_routes else "0")
 
+    os.environ['SKIP_FW_QUERY'] = "1"
     if checks.get('fingerprintSource', None) == 'fixed':
       os.environ['FINGERPRINT'] = checks['carFingerprint']
     else:
